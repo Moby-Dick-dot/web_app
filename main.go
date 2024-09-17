@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,14 +12,9 @@ import (
 	"time"
 	"web_app/dao/mysql"
 	"web_app/dao/redis"
+	"web_app/logger"
 	"web_app/routes"
 	"web_app/settings"
-
-	"github.com/spf13/viper"
-
-	"go.uber.org/zap"
-
-	"github.com/micro/go-micro/v2/logger"
 )
 
 func main() {
