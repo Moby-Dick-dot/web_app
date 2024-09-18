@@ -39,6 +39,11 @@ var (
 	ErrorInsertFailed  = errors.New("插入数据失败")
 )
 
+const (
+	// ContextUserIDKey 在Context里标识用户
+	ContextUserIDKey = "userID"
+)
+
 func (c MyCode) Msg() string {
 	msg, ok := msgFlags[c]
 	if ok {

@@ -1,10 +1,14 @@
 package mysql
 
 import (
+	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
+	g "web_app/global"
+	"web_app/model"
 )
 
 // 定义一个全局对象db
@@ -33,4 +37,32 @@ func Init() (err error) {
 
 func Close() {
 	_ = db.Close()
+}
+
+func GetCommunityList() (communityList []*model.Community, err error) {
+	sqlStr := "select community_id, community_name from community"
+	err = db.Select(&communityList, sqlStr)
+	if err == sql.ErrNoRows {
+		err = nil
+		return
+	}
+	return
+}
+
+func GetCommunityByID(idStr string) (community *model.CommunityDetail, err error) {
+	community = new(model.CommunityDetail)
+	sqlStr := `select community_id, community_name, introduction, create_time
+	from community
+	where community_id = ?`
+	err = db.Get(community, sqlStr, idStr)
+	if err == sql.ErrNoRows {
+		err = g.ErrorInvalidID
+		return
+	}
+	if err != nil {
+		zap.L().Error("query community failed", zap.String("sql", sqlStr), zap.Error(err))
+		err = g.ErrorQueryFailed
+		return
+	}
+	return
 }
