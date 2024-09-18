@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"database/sql"
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -10,7 +9,7 @@ import (
 )
 
 // 定义一个全局对象db
-var db *sql.DB
+var db *sqlx.DB
 
 // Init 定义一个初始化数据库的函数
 func Init() (err error) {
